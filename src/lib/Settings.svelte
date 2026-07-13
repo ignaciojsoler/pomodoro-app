@@ -3,10 +3,10 @@
   import { playAlarm } from './audio.js'
 
   const durations = [
-    { key: 'focusMin', label: 'Enfoque', min: 1, max: 90 },
-    { key: 'shortBreakMin', label: 'Descanso corto', min: 1, max: 30 },
-    { key: 'longBreakMin', label: 'Descanso largo', min: 1, max: 60 },
-    { key: 'longBreakEvery', label: 'Descanso largo cada', min: 2, max: 8, unit: 'pomodoros' }
+    { key: 'focusMin', label: 'Enfoque (min)', min: 1, max: 90 },
+    { key: 'shortBreakMin', label: 'Descanso corto (min)', min: 1, max: 30 },
+    { key: 'longBreakMin', label: 'Descanso largo (min)', min: 1, max: 60 },
+    { key: 'longBreakEvery', label: 'Pomodoros hasta el descanso largo', min: 2, max: 8 }
   ]
 
   const toggles = [
@@ -28,17 +28,14 @@
   {#each durations as d}
     <label class="row">
       <span>{d.label}</span>
-      <span class="value">
-        <input
-          type="number"
-          inputmode="numeric"
-          min={d.min}
-          max={d.max}
-          bind:value={timer.settings[d.key]}
-          onchange={() => clamp(d)}
-        />
-        <small>{d.unit ?? 'min'}</small>
-      </span>
+      <input
+        type="number"
+        inputmode="numeric"
+        min={d.min}
+        max={d.max}
+        bind:value={timer.settings[d.key]}
+        onchange={() => clamp(d)}
+      />
     </label>
   {/each}
 
@@ -87,18 +84,8 @@
     font-size: 0.95rem;
   }
 
-  .value {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .value small {
-    color: var(--text-dim);
-    width: 5.5ch;
-  }
-
   input[type='number'] {
+    flex-shrink: 0;
     width: 3.5rem;
     padding: 0.4rem;
     text-align: center;
