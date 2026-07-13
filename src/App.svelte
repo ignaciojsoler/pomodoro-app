@@ -1,6 +1,6 @@
 <script>
   import { timer, MODES } from './lib/timer.svelte.js'
-  import { playAlarm } from './lib/audio.js'
+  import { playAlarm, stopAlarm } from './lib/audio.js'
   import TimerDisplay from './lib/TimerDisplay.svelte'
   import Controls from './lib/Controls.svelte'
   import Settings from './lib/Settings.svelte'
@@ -82,8 +82,11 @@
   {/if}
 </main>
 
+<!-- Cualquier toque o tecla silencia la alarma en curso -->
 <svelte:window
+  onpointerdown={stopAlarm}
   onkeydown={(e) => {
+    stopAlarm()
     if (e.key === 'Escape') showSettings = false
   }}
 />

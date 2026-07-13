@@ -3,6 +3,7 @@
 // autoplay en móviles), por eso unlockAudio() se llama desde el botón Iniciar.
 
 let ctx = null
+let active = [] // osciladores de la alarma en curso, para poder apagarla
 
 export function unlockAudio() {
   if (!ctx) {
@@ -24,6 +25,21 @@ function beep(freq, when, dur = 0.22, volume = 0.35) {
   osc.connect(gain).connect(ctx.destination)
   osc.start(when)
   osc.stop(when + dur + 0.05)
+  active.push(osc)
+  osc.onended = () => {
+    active = active.filter((o) => o !== osc)
+  }
+}
+
+/** Silencia la alarma en curso (y la vibración) */
+export function stopAlarm() {
+  for (const osc of active) {
+    try {
+      osc.stop()
+    } catch {}
+  }
+  active = []
+  navigator.vibrate?.(0)
 }
 
 /**
@@ -33,6 +49,7 @@ function beep(freq, when, dur = 0.22, volume = 0.35) {
 export function playAlarm(endedMode) {
   unlockAudio()
   if (!ctx) return
+  stopAlarm()
   const t = ctx.currentTime + 0.05
   if (endedMode === 'focus') {
     const notes = [659.25, 783.99, 1046.5] // E5 G5 C6
