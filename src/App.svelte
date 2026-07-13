@@ -67,9 +67,25 @@
   </section>
 
   {#if showSettings}
-    <Settings />
+    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+    <div
+      class="overlay"
+      onclick={(e) => {
+        if (e.target === e.currentTarget) showSettings = false
+      }}
+    >
+      <div class="sheet">
+        <Settings />
+      </div>
+    </div>
   {/if}
 </main>
+
+<svelte:window
+  onkeydown={(e) => {
+    if (e.key === 'Escape') showSettings = false
+  }}
+/>
 
 <style>
   main {
@@ -146,5 +162,38 @@
     color: var(--text-dim);
     font-size: 0.9rem;
     margin-top: -0.5rem;
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .sheet {
+    width: min(100%, 24rem);
+    max-height: calc(100dvh - 4rem);
+    overflow-y: auto;
+    border-radius: var(--radius);
+    animation: rise 0.25s ease-out;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+  }
+
+  @media (min-width: 600px) {
+    .overlay {
+      align-items: center;
+    }
   }
 </style>
