@@ -10,7 +10,8 @@
   timer.onFinish = (endedMode) => {
     if (timer.settings.sound) playAlarm(endedMode)
     if (timer.settings.vibrate && 'vibrate' in navigator) {
-      navigator.vibrate(endedMode === 'focus' ? [300, 120, 300, 120, 500] : [200, 100, 200])
+      const pulse = endedMode === 'focus' ? [300, 120, 300, 120, 500, 400] : [200, 100, 200, 300]
+      navigator.vibrate([...pulse, ...pulse, ...pulse])
     }
   }
 

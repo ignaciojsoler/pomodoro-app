@@ -36,13 +36,13 @@ export function playAlarm(endedMode) {
   const t = ctx.currentTime + 0.05
   if (endedMode === 'focus') {
     const notes = [659.25, 783.99, 1046.5] // E5 G5 C6
-    for (let rep = 0; rep < 3; rep++) {
-      notes.forEach((f, i) => beep(f, t + rep * 0.9 + i * 0.18, 0.3))
+    for (let rep = 0; rep < 8; rep++) {
+      notes.forEach((f, i) => beep(f, t + rep * 1.0 + i * 0.18, 0.3))
     }
   } else {
     const notes = [1046.5, 783.99] // C6 G5
-    for (let rep = 0; rep < 2; rep++) {
-      notes.forEach((f, i) => beep(f, t + rep * 0.7 + i * 0.22, 0.35))
+    for (let rep = 0; rep < 6; rep++) {
+      notes.forEach((f, i) => beep(f, t + rep * 0.85 + i * 0.22, 0.35))
     }
   }
 }
